@@ -1,0 +1,36 @@
+# FROM apache/airflow:1.10.10.1-alpha2-python3.7
+FROM ubuntu:16.04
+# COPY dags $AIRFLOW_HOME/dags
+USER root
+# RUN apt-get update && \
+#     apt-get install pulseaudio socat -y && \
+#     apt-get install alsa-utils -y && \
+#     apt-get install ffmpeg -y && \ 
+#     apt-get install python3-pyaudio -y && \ 
+#     apt-get install curl -y && \
+#     apt-get install python3 -y
+# #install pip 
+# RUN curl "https://bootstrap.pypa.io/get-pip.py" -o "get-pip.py"
+# RUN python3 get-pip.py 
+
+#copy script 
+RUN mkdir /python_scripts /wav_files /other_scripts 
+COPY python_scripts /python_scripts/
+# CMD ["python3", "/python_scripts/liveRecord.py"]
+
+# https://stackoverflow.com/questions/43312975/record-sound-on-ubuntu-docker-image
+RUN apt-get update && \
+    apt-get install pulseaudio socat && \ 
+    apt-get install alsa-utils && \ 
+    apt-get install ffmpeg
+
+#copy pulse server setup 
+COPY other_scripts /other_scripts/
+CMD ["/other_scripts/Run_Pulse.sh"]
+# /other_scripts/runpulse.sh
+
+# docker run -it --rm -p 127.0.0.1:3000:3000 \
+# --mount type=bind,source=$(pwd)/wav_files,target=/wav_files \
+# gw_rec 
+
+# python3 /python_scripts/liveRecord.py

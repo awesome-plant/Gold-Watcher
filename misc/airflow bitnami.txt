@@ -1,0 +1,28 @@
+airflow bitnami
+https://docs.bitnami.com/tutorials/deploy-apache-airflow-kubernetes-helm/
+kind delete cluster --name=airflow-cluster 
+kind create cluster  --name airflow-cluster --config $(pwd)/kubernetes/kind-cluster.yaml  
+helm show values bitnami/airflow > bitnami.values.yml
+https://github.com/raquel-campuzano/tutorial-airflow-dag-examples
+
+
+kubeadm init --token=102952.1a7dd4cc8d1f4cc5 --kubernetes-version $(kubeadm version -o short)
+
+
+helm install -f bitnami.values.yaml --kube-token abc123 --kube-context kind-airflow-cluster airflow bitnami/airflow
+
+helm install f bitnami.values.yaml airflow bitnami/airflow \
+--set airflow.cloneDagFilesFromGit.enabled=true \
+--set airflow.cloneDagFilesFromGit.repository=https://github.com/raquel-campuzano/tutorial-airflow-dag-examples \
+--set airflow.cloneDagFilesFromGit.branch=master \
+--set airflow.baseUrl=http://127.0.0.1:8080
+
+user: user
+password: LP5TvDomRz
+
+
+
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - && / 
+sudo add-apt-repository    "deb [arch=amd64] https://download.docker.com/linux/ubuntu 
+   $(lsb_release -cs) 
+   stable"
